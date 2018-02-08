@@ -28,7 +28,9 @@ window.onload = function() {
 
 	var s = game.add.sprite(game.world.centerX, game.world.centerY,'Guy');
         bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'logo' );
-	var image = game.add.sprite(0, 0,'logo2');
+	var image = game.add.sprite(0, 0, 'logo2');
+
+	game.physics.enable(image, Phaser.Physics.ARCADE);
 
         // Anchor the sprite at its center, as opposed to its top-left corner.
         // so it will be truly centered.
