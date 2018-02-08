@@ -16,7 +16,7 @@ window.onload = function() {
         // Load an image and call it 'logo'.
 	game.load.image('Guy', 'assets/Familyguy.jpg');
         game.load.image( 'logo', 'assets/Stewie.png' );
-	game.load.image( 'logo2', 'assets/ice.png' );
+	game.load.image( 'logo2', 'assets/Roger.png' );
 	
     }
     
@@ -25,7 +25,7 @@ window.onload = function() {
     function create() {
         // Create a sprite at the center of the screen using the 'logo' image.
 
-	var s = game.add.sprite(80, 80, 'Guy');
+	var s = game.add.sprite(200, 200, 'Guy');
         bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'logo' );
 	var image = game.add.sprite(0, 0, 'logo2');
 
