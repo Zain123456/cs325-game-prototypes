@@ -25,7 +25,7 @@ window.onload = function() {
     function create() {
         // Create a sprite at the center of the screen using the 'logo' image.
 
-	var s = game.add.sprite(800, 600, 'Guy');
+	var s = game.add.sprite(80, 80, 'Guy');
         bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'logo' );
 	var image = game.add.sprite(0, 0, 'logo2');
 
@@ -49,7 +49,7 @@ window.onload = function() {
 	game.physics.enable(image, Phaser.Physics.ARCADE);
 
     
-	image.body.velocity.x=50;
+	image.body.velocity.x=10;
     }
     
     function update() {
