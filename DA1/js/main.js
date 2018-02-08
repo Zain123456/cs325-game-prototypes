@@ -16,7 +16,7 @@ window.onload = function() {
         // Load an image and call it 'logo'.
 	game.load.image('Guy', 'assets/Familyguy.jpg');
         game.load.image( 'logo', 'assets/Stewie.png' );
-	game.load.image( 'logo2', 'assets/Roger.jpg' );
+	game.load.image( 'logo2', 'assets/ice.png' );
 	
     }
     
@@ -24,10 +24,11 @@ window.onload = function() {
     
     function create() {
         // Create a sprite at the center of the screen using the 'logo' image.
+	game.physics.startSystem(Phaser.Physics.ARCADE);
 
 	var s = game.add.sprite(game.world.centerX, game.world.centerY,'Guy');
         bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'logo' );
-	var image = game.add.sprite(10, 10, 'logo2');
+	var image = game.add.sprite(0, 0,'logo2');
 
         // Anchor the sprite at its center, as opposed to its top-left corner.
         // so it will be truly centered.
@@ -46,10 +47,11 @@ window.onload = function() {
         var text = game.add.text( game.world.centerX, 15, " ", style );
         
 	text.anchor.setTo( 0.5, 0.0 );
-	game.physics.enable(image, Phaser.Physics.ARCADE);
 
-    
-	image.body.velocity.x=10;
+	image.body.velocity.setTo(200,200);
+	image.body.collideWorldBounds = true;
+	image.body.bounce.set(1);
+
     }
     
     function update() {
