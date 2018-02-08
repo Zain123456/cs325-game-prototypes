@@ -46,7 +46,7 @@ window.onload = function() {
         var text = game.add.text( game.world.centerX, 15, " ", style );
         
 	text.anchor.setTo( 0.5, 0.0 );
-	game.physics.enable(image, Phaser.Physics.ARCADE);
+	//game.physics.enable(image, Phaser.Physics.ARCADE);
 
     
 	image.body.velocity.x=10;
