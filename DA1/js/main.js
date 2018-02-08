@@ -15,7 +15,8 @@ window.onload = function() {
     function preload() {
         // Load an image and call it 'logo'.
         game.load.image( 'logo', 'assets/Stewie.png' );
-	game.load.image( 'logo2', 'assets/Stewie.jpg' );
+	game.load.image( 'logo2', 'assets/Stewie.png' );
+	game.load.image('Guy', 'assets/Familyguy.jpg');
     }
     
     var bouncy;
@@ -27,7 +28,10 @@ window.onload = function() {
         // Anchor the sprite at its center, as opposed to its top-left corner.
         // so it will be truly centered.
         bouncy.anchor.setTo( 0.5, 0.5 );
-        
+
+        var s = game.add.sprite(80, 0, 'Guy');
+	s.Guy = 0.14;
+
         // Turn on the arcade physics engine for this sprite.
         game.physics.enable( bouncy, Phaser.Physics.ARCADE );
         // Make it bounce off of the world bounds.
@@ -36,7 +40,7 @@ window.onload = function() {
         // Add some text using a CSS style.
         // Center it in X, and position its top 15 pixels from the top of the world.
         var style = { font: "25px Verdana", fill: "#9999ff", align: "center" };
-        var text = game.add.text( game.world.centerX, 15, "Build something amazing.", style );
+        var text = game.add.text( game.world.centerX, 15, "Watch out Stewie!!!!", style );
         text.anchor.setTo( 0.5, 0.0 );
     }
     
