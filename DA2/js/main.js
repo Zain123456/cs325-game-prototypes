@@ -15,10 +15,10 @@ window.onload = function() {
     function preload() {
         // Load an image 
 	game.load.image('Background', 'assets/pokemon.jpg');
-	game.load.image('chicken', 'assets/rooster.png');
+	game.load.image('chicken', 'assets/Rooster.png');
 	game.load.image('ground', 'assets/ground.png');
 	game.load.image('great', 'assets/greatball.png');
-        game.load.image( 'ultra', 'assets/ultraball.png');
+        game.load.image( 'ultra', 'assets/Ultraball.png');
 	game.load.image('ball', 'assets/ball.png', 200, 200);
     }
     
