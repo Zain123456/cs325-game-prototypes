@@ -17,18 +17,23 @@ window.onload = function() {
 	game.load.image('Background', 'assets/pokemon.jpg');
 	game.load.image('chicken', 'assets/rooster.png', 35, 48);
 	game.load.image('ground', 'assets/ground.png');
-	game.load.image('star', 'assets/phaser.png');
-        //game.load.image( 'logo', 'assets/rooster.png' );
+	game.load.image('great', 'assets/greatball.png');
+        game.load.image( 'ultra', 'assets/ultraball.png',200,200 );
 	game.load.image('ball', 'assets/ball.png', 200, 200);
     }
     
     var bouncy;
     var sprite; 
-    var player;
-    var ground;	
+    var ground;
+    var Text;
+    var ball;
+    var great;
+    var ultra;	
+
 
     function create() {
 
+	//load backgroud
 	sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'Background');
     
 	sprite.anchor.set(0.5);
@@ -37,68 +42,76 @@ window.onload = function() {
 	sprite.scale.setTo(0.5,0.5);
     
 	game.stage.backgroundColor = '#000';
-	
-	var emitter = game.add.emitter(game.world.centerX, 0, 400);
+	//load ultraball
+      ultra = game.add.sprite(0,0,'ultra');
+	ultra.scale.setTo(0.2,0.2);
+      game.physics.arcade.enable(ultra);
+      ultra.body.gravity.y = 200;
+      ultra.body.velocity.setTo(300, 400);
+      //adds bounce 
+      ultra.body.bounce.setTo(1,1);
+      //the walls
+      ultra.body.collideWorldBounds = true;
+	//load the pokeball
+      ball = game.add.sprite(0,0,'ball');
+	ball.scale.setTo(0.5,0.5);
+      game.physics.arcade.enable(ball);
+      ball.body.gravity.y = 300;
+      ball.body.velocity.setTo(900, 900);
+      //adds bounce 
+      ball.body.bounce.setTo(1,1);
+      //add the wall
+      ball.body.collideWorldBounds = true;
+	//create the greatball
+      great = game.add.sprite(0,0,'great');
+	great.scale.setTo(0.2,0.2);
+      game.physics.arcade.enable(great);
+      great.body.gravity.y = 300;
+      great.body.velocity.setTo(200, 250);
+      //adds bounce 
+      great.body.bounce.setTo(1,1);
+      //the walls
+      great.body.collideWorldBounds = true;
 
-	emitter.width = game.world.width;
-
-	emitter.makeParticles('ball');
-
-	emitter.minParticleScale = 0.1;
-	emitter.maxParticleScale = 0.5;
-
-	emitter.setYSpeed(300, 500);
-	emitter.setXSpeed(-5, 5);
-
-	emitter.minRotation = 0;
-	emitter.maxRotation = 0;
-
-	emitter.start(false, 1600, 5, 0);
-
-
-	//ground of the game
+	//ground for the game
       ground = game.add.sprite(0,game.height - 60,'ground');
       ground.scale.setTo(2,2);
       game.physics.arcade.enable(ground);
       ground.body.allowGravity = false;
       ground.body.immovable = true;
-
-	bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'chicken' );	
-        bouncy.scale.setTo(0.5,0.5);
+	//bounce off the ground
+	bouncy = game.add.sprite( 50, game.world.centerY, 'chicken' );	
+        bouncy.scale.setTo(0.2,0.2);
 	game.physics.arcade.enable(bouncy);
       bouncy.body.collideWorldBounds = true;
 	bouncy.body.gravity.y = 500;
+	
+	//Display the text
+        var style = { font: "25px Verdana", fill: "#9999ff", align: "center", color: "Black" };
 
-        // Create a sprite at the center of the screen using the 'logo' image.
-        //bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'logo' );
-        // Anchor the sprite at its center, as opposed to its top-left corner.
-        // so it will be truly centered.
-        //bouncy.anchor.setTo( 0.5, 0.5 );
-        
-        // Turn on the arcade physics engine for this sprite.
-        //game.physics.enable( bouncy, Phaser.Physics.ARCADE );
-        // Make it bounce off of the world bounds.
-        //bouncy.body.collideWorldBounds = true;
-        
-        // Add some text using a CSS style.
-        // Center it in X, and position its top 15 pixels from the top of the world.
-        var style = { font: "25px Verdana", fill: "#9999ff", align: "center" };
-        var text = game.add.text( game.world.centerX, 15, "Build something amazing.", style );
-        text.anchor.setTo( 0.5, 0.0 );
+	Text = game.add.text( game.world.centerX, 15, " ", style );
+        Text.anchor.setTo( 0.5, 0.0 );
+
+	//Text = game.add.text(16, 16, 'Drag the sprites. Overlapping: false');
     }
 
+	//check for overlap
+	function checkOverlap(spriteA, spriteB) {
+
+    
+	var boundsA = spriteA.getBounds();
+  	  
+	var boundsB = spriteB.getBounds();
+
+    
+	return Phaser.Rectangle.intersects(boundsA, boundsB);
+
+
+	}
 
     function update() {
-        // Accelerate the 'logo' sprite towards the cursor,
-        // accelerating at 500 pixels/second and moving no faster than 500 pixels/second
-        // in X or Y.
-        // This function returns the rotation angle that makes it visually match its
-        // new trajectory.
-        //bouncy.rotation = game.physics.arcade.accelerateToPointer( bouncy, game.input.activePointer, 500, 500, 500 );
-	      //checks if the player collided with the ground. 
-      game.physics.arcade.collide(bouncy, ground);
 
-      
+      //physics	      
       game.physics.arcade.collide(bouncy, ground);
 
       bouncy.body.velocity.x = 0;
@@ -107,11 +120,11 @@ window.onload = function() {
 
       //add controls for the player to move (written following phaser tutorial)
       if(cursors.left.isDown) {
-        bouncy.body.velocity.x = -200;
+        bouncy.body.velocity.x = -400;
         bouncy.animations.play('left');
       }
       else if(cursors.right.isDown) {
-       bouncy.body.velocity.x = 200;
+       bouncy.body.velocity.x = 400;
         bouncy.animations.play('right');
       }
       else {
@@ -120,8 +133,25 @@ window.onload = function() {
       }
 
       if (cursors.up.isDown && bouncy.body.touching.down) {
-        bouncy.body.velocity.y = -150;
+        bouncy.body.velocity.y = -450;
       }
+	//check for overlap
+	if (checkOverlap(bouncy, ball))
+   
+ 	{
+        
+		Text.text = 'Game Over';
+
+		alert("Noooooo!!!!! Game Over, You have been caught. Refresh page to try again ");
+		bouncy.kill();
+		    
+	}
+
+	else
+	{
+		Text.text = 'Avoid the PokeBall or You will be stuck in the Pokemon world';
+	}	
+   
 
     }
 };
