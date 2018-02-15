@@ -18,7 +18,7 @@ window.onload = function() {
 	game.load.image('chicken', 'assets/Rooster.png');
 	game.load.image('ground', 'assets/ground.png');
 	game.load.image('great', 'assets/greatball.png');
-        game.load.image( 'ultra', 'assets/Ultraball.png');
+        game.load.image( 'ultra', 'assets/UltraBall.png');
 	game.load.image('ball', 'assets/ball.png', 200, 200);
     }
     
