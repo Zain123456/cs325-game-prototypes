@@ -13,12 +13,12 @@ window.onload = function() {
     var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update } );
     
     function preload() {
-        // Load an image and call it 'logo'.
+        // Load an image 
 	game.load.image('Background', 'assets/pokemon.jpg');
-	game.load.image('chicken', 'assets/rooster.png', 35, 48);
+	game.load.image('chicken', 'assets/rooster.png');
 	game.load.image('ground', 'assets/ground.png');
 	game.load.image('great', 'assets/greatball.png');
-        game.load.image( 'ultra', 'assets/ultraball.png',200,200 );
+        game.load.image( 'ultra', 'assets/ultraball.png');
 	game.load.image('ball', 'assets/ball.png', 200, 200);
     }
     
@@ -140,9 +140,9 @@ window.onload = function() {
    
  	{
         
-		Text.text = 'Game Over';
+		Text.text = "Noooooo!!!!! Game Over, You have been caught. Refresh page to try again ";
 
-		alert("Noooooo!!!!! Game Over, You have been caught. Refresh page to try again ");
+		
 		bouncy.kill();
 		    
 	}
