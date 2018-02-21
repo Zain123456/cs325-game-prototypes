@@ -41,7 +41,7 @@ function create() {
     //  The scrolling starfield background
     starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
 	rock = game.add.emitter(game.world.centerX, 5, 100);
-
+	rock.scale.setTo(0.5);
 	rock.width = game.world.width; 
 
 	rock.makeParticles('rock');
@@ -56,15 +56,14 @@ function create() {
 	rock.maxRotation = 20;
 
 	rock.start(false, 2000, 200, 0);
-
+	game.physics.enable(rock, Phaser.Physics.ARCADE);
 
     //  The hero!
     player = game.add.sprite(400, 500, 'ship');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
     player.scale.setTo(0.1,0.1);
-
-
+	
     //  The score
     scoreString = 'Score : ';
     scoreText = game.add.text(10, 10, scoreString + score, { font: '34px Arial', fill: '#fff' });
@@ -114,15 +113,32 @@ function update() {
         }
 
         //  Run collision
-        game.physics.arcade.overlap(rock, player, enemyHitsPlayer, null, this);
+        //game.physics.arcade.overlap(rock, player, enemyHitsPlayer, null, this);
+		if(checkOverlap(player,rock))
+		{
+			player.destroy();
 
+		}
         
     }
 
 }
 
+	//check for overlap
+	function checkOverlap(spriteA, spriteB) {
 
-function enemyHitsPlayer (player,emitter) {
+    
+	var boundsA = spriteA.getBounds();
+  	  
+	var boundsB = spriteB.getBounds();
+
+    
+	return Phaser.Rectangle.intersects(boundsA, boundsB);
+
+
+	}
+
+function enemyHitsPlayer (player,rock) {
     
     rock.kill();
 
