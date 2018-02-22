@@ -9,126 +9,132 @@ window.onload = function() {
     // You will need to change the paths you pass to "game.load.image()" or any other
     // loading functions to reflect where you are putting the assets.
     // All loading functions will typically all be found inside "preload()".
-    
-    
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: preload, create: create, update: update});
 
-function preload() {
+    var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update } );
 
-    game.load.spritesheet('rock', 'assets/rock.png');
-    game.load.image('ship', 'assets/player.png');
-    game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
-    game.load.image('starfield', 'assets/starfield.png');
-    
-
-}
-
-var player;
-var cursors;
-var explosions;
-var starfield;
-var score = 0;
-var scoreString = '';
-var scoreText;
-var stateText;
-var rock;
-
-function create() {
-
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-
-    //  The scrolling starfield background
-    starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
-	rock = game.add.emitter(game.world.centerX, 5, 100);
-	rock.scale.setTo(1);
-	rock.width = game.world.width; 
-
-	rock.makeParticles('rock');
-
-	rock.minParticleScale = 0.1;
-	rock.maxParticleScale = 0.3;
-
-	rock.setYSpeed(200, 600);
-	rock.setXSpeed(-5, 5);
-
-	rock.minRotation = 4;
-	rock.maxRotation = 20;
-	rock.checkWorldBounds = true;
-    rock.outOfBoundsKill = true;
-	rock.collision = true; 
-	game.physics.enable(rock, Phaser.Physics.ARCADE);
-	rock.start(false, 2000, 200, 0);
-	
-
-    //  The hero!
-    player = game.add.sprite(400, 500, 'ship');
-    player.anchor.setTo(0.5, 0.5);
-    game.physics.enable(player, Phaser.Physics.ARCADE);
-    player.scale.setTo(0.1,0.1);
-	
-    //  The score
-    scoreString = 'Score : ';
-    scoreText = game.add.text(10, 10, scoreString + score, { font: '34px Arial', fill: '#fff' });
-
-    //  Text
-    stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Arial', fill: '#fff' });
-    stateText.anchor.setTo(0.5, 0.5);
-    stateText.visible = false;
-
-
-
-    //  An explosion pool
-    explosions = game.add.group();
-    explosions.createMultiple(30, 'kaboom');
-    
-
-    //  And some controls to play the game with
-    cursors = game.input.keyboard.createCursorKeys();
-    
-}
-
-
-
-function update() {
-
-
-    //  Scroll the background
-    starfield.tilePosition.y += 2;
-
-    if (player.alive)
-    {
-        //  Reset the player, then check for movement keys
-        player.body.velocity.setTo(0, 0);
-
-        if (cursors.left.isDown)
-        {
-            player.body.velocity.x = -200;
-        }
-        else if (cursors.right.isDown)
-        {
-            player.body.velocity.x = 200;
-        }
-
-        //  Run collision
-        //game.physics.arcade.overlap(rock, player, enemyHitsPlayer, null, this);
-		//game.physics.arcade.collide(rock, player, checkOverlap, null, this);
-
-		if(player.overlap(rock))
-		{
-			player.destroy();
-			rock.destroy(); 
-			stateText.text=" GAME OVER \n Game will restart \n in 5 seconds";
-			stateText.visible = true;
-			setTimeout(myFunction, 5000);
-			function myFunction() {
-				location.reload();
-			}
-			
-		}
-        
+    function preload() {
+        // Load an image and call it 'logo'.
+        game.load.image( 'mouse', 'assets/mouse.png' );
+        game.load.image('trap', 'assets/trap.png');
+		game.load.image('cat', 'assets/cat.png');
+        //game.load.audio('eaten', 'assets/eaten.mp3');
     }
 
-}
+
+    var mouse;
+    let button;
+    let trap;
+    let array;
+	var cat;
+	var CatHealth = ' ';
+	var Text;
+	var health;
+	var stateText;
+
+    function create() {
+      game.physics.startSystem(Phaser.Physics.ARCADE);
+        button = game.input.keyboard.createCursorKeys();
+
+        mouse = game.add.sprite( 500, 1000, 'mouse' );
+		cat = game.add.sprite( 0, 1000, 'cat' );
+		cat.scale.setTo(0.1);
+		game.physics.enable( cat, Phaser.Physics.ARCADE );
+		cat.body.collideWorldBounds = true;
+		mouse.scale.setTo(0.1);
+        array = [];
+        for(let i = 0; i < 5; i++){
+
+          array.push(game.add.sprite(Math.random() * game.world.width, Math.random() * game.world.height, 'trap'));
+
+        }
+        game.physics.arcade.gravity.y = 100;
+
+        mouse.anchor.setTo( 0.5, 0.5 );
+
+        // Turn on the arcade physics engine for this sprite.
+        game.physics.enable( mouse, Phaser.Physics.ARCADE );
+        game.physics.enable( array, Phaser.Physics.ARCADE );
+        array.forEach(function(trap){
+          trap.body.immovable = true;
+			trap.scale.setTo(0.1);
+          trap.body.moves = false;
+        });
+        // Make it bounce off of the world bounds.
+        mouse.body.collideWorldBounds = true;
 
 
+        game.stage.backgroundColor = "#a6aab2";
+         // event handler for pichu eating cookie
+        mouse.body.onCollide = new Phaser.Signal();
+		cat.body.onCollide = new Phaser.Signal();
+        mouse.body.onCollide.add(collide1, this);
+		cat.body.onCollide.add(collide2, this);
+		
+		    //  The score
+    CatHealth = 'Cat Health : ';
+	health = 100; 
+    Text = game.add.text(140, 20, CatHealth + health, { font: '34px Arial', fill: '#fff' });
+
+    Text.anchor.setTo(0.5, 0.5);
+	
+    stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Arial', fill: '#fff' });
+    stateText.anchor.setTo(0.5, 0.5);
+    
+		
+    }
+
+    function collide1(sprite1, sprite2){
+  
+	stateText.text = "Game Over"
+    stateText.visible = true;
+
+    }
+	    function collide2(sprite1, sprite2){
+      sprite2.destroy(); // pichu ate cookie
+		if(health > 10)
+		{
+			health = health - 30;
+			Text.text = CatHealth + health; 
+		}
+		else
+		{
+			sprite1.destroy();
+		    stateText.text = "You won"
+			stateText.visible = true;
+		}
+
+    }
+
+    function update() {
+
+        if (button.up.isDown)
+        {
+          // move sprite down
+          mouse.body.velocity.y -= 10;
+		  cat.body.velocity.y -= 5;
+        }
+
+        else if (button.down.shiftKey)
+        {
+          mouse.body.velocity.y += 10;
+		  cat.body.velocity.y += 5;
+        }
+
+        else if (button.left.isDown)
+        {
+          mouse.body.velocity.x -= 10;
+		  cat.body.velocity.x -= 5;
+        }
+        else if (button.right.isDown)
+        {
+          mouse.body.velocity.x += 10;
+		  cat.body.velocity.x += 5;
+        }
+
+
+        //check for collision
+        game.physics.arcade.collide(mouse, array);
+		game.physics.arcade.collide(cat, array);
+		game.physics.arcade.collide(mouse, cat);
+    }
 };
