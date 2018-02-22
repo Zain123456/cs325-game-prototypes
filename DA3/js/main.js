@@ -42,7 +42,7 @@ window.onload = function() {
 		cat.body.collideWorldBounds = true;
 		mouse.scale.setTo(0.1);
         array = [];
-        for(let i = 0; i < 5; i++){
+        for(let i = 0; i < 7; i++){
 
           array.push(game.add.sprite(Math.random() * game.world.width, Math.random() * game.world.height, 'trap'));
 
