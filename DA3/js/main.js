@@ -11,7 +11,7 @@ window.onload = function() {
     // All loading functions will typically all be found inside "preload()".
     
     
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: preload, create: create, update: update, enemyHitsPlayer: enemyHitsPlayer  });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: preload, create: create, update: update});
 
 function preload() {
 
@@ -30,7 +30,6 @@ var starfield;
 var score = 0;
 var scoreString = '';
 var scoreText;
-var lives;
 var stateText;
 var rock;
 
@@ -41,7 +40,7 @@ function create() {
     //  The scrolling starfield background
     starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
 	rock = game.add.emitter(game.world.centerX, 5, 100);
-	rock.scale.setTo(0.5);
+	rock.scale.setTo(1);
 	rock.width = game.world.width; 
 
 	rock.makeParticles('rock');
@@ -54,9 +53,12 @@ function create() {
 
 	rock.minRotation = 4;
 	rock.maxRotation = 20;
-
-	rock.start(false, 2000, 200, 0);
+	rock.checkWorldBounds = true;
+    rock.outOfBoundsKill = true;
+	rock.collision = true; 
 	game.physics.enable(rock, Phaser.Physics.ARCADE);
+	rock.start(false, 2000, 200, 0);
+	
 
     //  The hero!
     player = game.add.sprite(400, 500, 'ship');
@@ -67,10 +69,6 @@ function create() {
     //  The score
     scoreString = 'Score : ';
     scoreText = game.add.text(10, 10, scoreString + score, { font: '34px Arial', fill: '#fff' });
-
-    //  Lives
-    lives = game.add.group();
-    game.add.text(game.world.width - 100, 10, 'Lives : ', { font: '34px Arial', fill: '#fff' });
 
     //  Text
     stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Arial', fill: '#fff' });
@@ -86,7 +84,6 @@ function create() {
 
     //  And some controls to play the game with
     cursors = game.input.keyboard.createCursorKeys();
-
     
 }
 
@@ -114,71 +111,22 @@ function update() {
 
         //  Run collision
         //game.physics.arcade.overlap(rock, player, enemyHitsPlayer, null, this);
-		if(checkOverlap(player,rock))
+		//game.physics.arcade.collide(rock, player, checkOverlap, null, this);
+
+		if(player.overlap(rock))
 		{
 			player.destroy();
-
+			rock.destroy(); 
+			stateText.text=" GAME OVER \n Game will restart \n in 5 seconds";
+			stateText.visible = true;
+			setTimeout(myFunction, 5000);
+			function myFunction() {
+				location.reload();
+			}
+			
 		}
         
     }
-
-}
-
-	//check for overlap
-	function checkOverlap(spriteA, spriteB) {
-
-    
-	var boundsA = spriteA.getBounds();
-  	  
-	var boundsB = spriteB.getBounds();
-
-    
-	return Phaser.Rectangle.intersects(boundsA, boundsB);
-
-
-	}
-
-function enemyHitsPlayer (player,rock) {
-    
-    rock.kill();
-
-    live = lives.getFirstAlive();
-
-    if (live)
-    {
-        live.kill();
-    }
-
-    //  And create an explosion :)
-    var explosion = explosions.getFirstExists(false);
-    explosion.reset(player.body.x, player.body.y);
-    explosion.play('kaboom', 30, false, true);
-
-    // When the player dies
-    if (lives.countLiving() < 1)
-    {
-        player.kill();
-        
-
-        stateText.text=" GAME OVER \n Click to restart";
-        stateText.visible = true;
-
-        //the "click to restart" handler
-        game.input.onTap.addOnce(restart,this);
-    }
-
-}
-
-
-function restart () {
-    
-    //resets the life count
-    lives.callAll('revive');
-
-    //revives the player
-    player.revive();
-    //hides the text
-    stateText.visible = false;
 
 }
 
