@@ -118,7 +118,7 @@ window.onload = function() {
     function collide1(sprite1, sprite2){
     
 	sprite1.kill(); 
-	stateText.text = "Game Over"
+	stateText.text = "Game Over \n You Fell In "
     stateText.visible = true;
 
     }
