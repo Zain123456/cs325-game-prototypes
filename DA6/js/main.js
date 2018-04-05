@@ -119,7 +119,7 @@ window.onload = function() {
 		{
 			ball2.destroy();
 			Text.text = HouseHealth + 0;
-			music.stop();
+			music.kill();
 		    stateText.text = "Game Over, \n You lasted " + Math.round(i/60) + "s";
 			stateText.visible = true;
 		}
@@ -210,7 +210,7 @@ window.onload = function() {
 		{
 			ball.destroy();
 			Text.text = HouseHealth + 0;
-			music.stop();
+			music.kill();
 		    stateText.text = "Game Over, \n You lasted " + Math.round(i/60) + "s";
 			stateText.visible = true;
 		}
