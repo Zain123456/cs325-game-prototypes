@@ -19,6 +19,7 @@ window.onload = function() {
 	game.load.image('house', 'assets/house.png');
 	game.load.image('player', 'assets/shield.png');
 	game.load.image('ball', 'assets/ball.png');
+	game.load.audio('time', 'assets/time.mp3');
 
     }
 
@@ -34,10 +35,16 @@ window.onload = function() {
 	var ball;
 	var ball2;
     var i = 0;
+	var time = ' ';
+	var music;
 
     function create() {
 		
 	button = game.input.keyboard.createCursorKeys();
+	//sound
+	music = game.add.audio('time');
+
+    music.play();
 
 	      	//load backgroud
 	sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'Background');
@@ -78,6 +85,10 @@ window.onload = function() {
 
     Text.anchor.setTo(0.5, 0.5);
 	
+	time = game.add.text(650, 20, 'Time : ' + i, { font: '34px Arial', fill: '#fff' });
+
+    time.anchor.setTo(0.5, 0.5);
+	
     stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Arial', fill: '#fff' });
     stateText.anchor.setTo(0.5, 0.5);
 	
@@ -106,7 +117,10 @@ window.onload = function() {
 		}
 		else
 		{
-		    stateText.text = "Game Over"
+			ball2.destroy();
+			Text.text = HouseHealth + 0;
+			music.stop();
+		    stateText.text = "Game Over, \n You lasted " + Math.round(i/60) + "s";
 			stateText.visible = true;
 		}
 
@@ -149,7 +163,7 @@ window.onload = function() {
     function update() {
 		
 	i = i + 1;
-	
+	time.text = 'Time : ' + Math.round(i/60);
 		
 		player.body.velocity.x = 0;
 
@@ -194,7 +208,10 @@ window.onload = function() {
 		}
 		else
 		{
-		    stateText.text = "Game Over"
+			ball.destroy();
+			Text.text = HouseHealth + 0;
+			music.stop();
+		    stateText.text = "Game Over, \n You lasted " + Math.round(i/60) + "s";
 			stateText.visible = true;
 		}
 		}
