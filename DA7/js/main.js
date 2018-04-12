@@ -104,7 +104,7 @@ window.onload = function() {
 	
 	creatball();	
 	creatball2();	
-	creatball3();
+	//creatball3();
 
 	}
 	
@@ -196,6 +196,10 @@ window.onload = function() {
 	time.text = 'Time : ' + Math.round(i/60);
 		
 		player.body.velocity.x = 0;
+	if(i == 900)
+	{
+		creatball3();
+	}
 
 
 	        if (button.up.isDown)
@@ -221,10 +225,45 @@ window.onload = function() {
 		
 		//game.physics.arcade.collide(player, ball);
 		//game.physics.arcade.collide(house, ball);
+		if(fire != null){
 		game.physics.arcade.collide(house, fire);
 		game.physics.arcade.collide(player, fire);
+		}
 		
+		if(fire != null)
+		{
+			if (checkOverlap(player, fire))
+			{
+				hit = hit -1;
+				bossHealth.text = 'Boss : ' + hit;
+				if (hit == 0)
+				{
+					fire.destroy();
+					
+					music.stop();
+					stateText.text = "You Win, \n You lasted " + Math.round(i/60) + "s";
+					stateText.visible = true;
+				}
+			}
+			else if(checkOverlap(house, fire))
+			{
+				if(health > 20)
+				{
+					health = health - 20;
+					Text.text = HouseHealth + health;
+				}
+				else
+				{
+			        fire.destroy();
+					Text.text = HouseHealth + 0;
+					music.stop();
+					stateText.text = "Game Over, \n You lasted " + Math.round(i/60) + "s";
+					stateText.visible = true;
 
+				}
+			}
+		}
+		
 		
 	    if (checkOverlap(player, ball2))
 		{
@@ -242,13 +281,14 @@ window.onload = function() {
 		}
 		else
 		{
-			player.destroy();
-			fire.destroy();
+
 			ball.destroy();
 			Text.text = HouseHealth + 0;
 			music.stop();
 		    stateText.text = "Game Over, \n You lasted " + Math.round(i/60) + "s";
 			stateText.visible = true;
+			if(fire != null)
+			fire.destroy();
 		}
 		}
 		else if (checkOverlap(player,ball))
@@ -267,12 +307,13 @@ window.onload = function() {
 		}
 		else
 		{
-			player.destroy();
-			fire.destroy();
+
 			Text.text = HouseHealth + 0;
 			music.stop();
 		    stateText.text = "Game Over, \n You lasted " + Math.round(i/60) + "s";
 			stateText.visible = true;
+			if(fire != null)
+			fire.destroy();
 		}
 		}
 
