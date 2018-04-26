@@ -76,7 +76,7 @@ window.onload = function() {
 		game.physics.arcade.enable(home);
 		home.body.velocity.x = -150;
 		home.body.onCollide = new Phaser.Signal();
-		
+		home.body.onCollide.add(collide1, this);
 	}
 	
     function createCar() {
@@ -85,7 +85,7 @@ window.onload = function() {
 		game.physics.arcade.enable(car);
 		car.body.velocity.x = -150;
 		car.body.onCollide = new Phaser.Signal();
-		
+		car.body.onCollide.add(collide2, this);
 	}
     function createBus() {
 		bus = game.add.sprite(800, 100*Math.random()+300, 'bus');
@@ -93,7 +93,7 @@ window.onload = function() {
 		game.physics.arcade.enable(bus);
 		bus.body.velocity.x = -150;
 		bus.body.onCollide = new Phaser.Signal();
-		
+		bus.body.onCollide.add(collide2, this);
 	}
     function createFire() {
 		fire = game.add.sprite(800, 200*Math.random()+100, 'fire');
@@ -101,7 +101,7 @@ window.onload = function() {
 		game.physics.arcade.enable(fire);
 		fire.body.velocity.x = -150;
 		fire.body.onCollide = new Phaser.Signal();
-		
+		fire.body.onCollide.add(collide2, this);
 	}
     function createCan() {
 		can = game.add.sprite(800, 250*Math.random(), 'can');
@@ -109,7 +109,7 @@ window.onload = function() {
 		game.physics.arcade.enable(can);
 		can.body.velocity.x = -150;
 		can.body.onCollide = new Phaser.Signal();
-		
+		can.body.onCollide.add(collide2, this);
 	}
     function createRock() {
 		rock = game.add.sprite(800, 150*Math.random()+400, 'rock');
@@ -117,7 +117,7 @@ window.onload = function() {
 		game.physics.arcade.enable(rock);
 		rock.body.velocity.x = -150;
 		rock.body.onCollide = new Phaser.Signal();
-		
+		rock.body.onCollide.add(collide2, this);
 	}
 	
 	
@@ -130,6 +130,18 @@ window.onload = function() {
    
 	return Phaser.Rectangle.intersects(boundsA, boundsB);
 
+	}
+	
+	function collide1(sprite1, sprite2){
+      sprite1.destroy();
+	  stateText.text = "You Won \n You Made it home " ;
+	  stateText.visible = true;	  
+	}
+	function collide2(sprite1, sprite2){
+	  
+	  stateText.text = "Go Over \n You did not \n make it home " ;
+	  stateText.visible = true;
+      sprite2.destroy(); 
 	}
     
     function update() {
@@ -186,7 +198,7 @@ window.onload = function() {
 		{
 			createRock();
 		}
-		else if(Math.round(distance/60) == 50 && home == null)
+		else if(Math.round(distance/60) == 40 && home == null)
 		{
 			createHome();
 		}
@@ -201,37 +213,20 @@ window.onload = function() {
 			i =0; 
 		}
 		
-		if (car != null && checkOverlap(sprite,car))
-		{
-			
-		}
-		if(bus != null){
-		if (checkOverlap(sprite,bus) && bus != null)
-		{
-			
-		}}
-		if(fire != null){
-		if (checkOverlap(sprite,fire)&& fire != null)
-		{
-			
-		}}
-		if(can != null){
-		if (checkOverlap(sprite,can)&& can != null)
-		{
-			
-		}}
-		if(rock != null){
-		if (checkOverlap(sprite,rock)&& rock != null)
-		{
-			
-		}}
-		if(home != null){
-		if (checkOverlap(sprite,home)&& home != null)
-		{
-			stateText.text = "You Won, \n You made it Home " ;
-			stateText.visible = true;
-		}}
+		if(car != null)
+		game.physics.arcade.collide(sprite, car);
+		if(bus != null)
+		game.physics.arcade.collide(sprite, bus);
+		if(fire != null)
+		game.physics.arcade.collide(sprite, fire);
+		if(rock != null)
+		game.physics.arcade.collide(sprite, rock);
+		if(can != null)
+		game.physics.arcade.collide(sprite, can);
+		if(home != null)
+		game.physics.arcade.collide(sprite, home);
 		
+	
 
     }
 };
