@@ -72,8 +72,8 @@ window.onload = function() {
     }
 	
 	function createHome() {
-		home = game.add.sprite(800, 350*Math.random(), 'home');
-		home.scale.setTo(0.4,0.4);
+		home = game.add.sprite(800, 20, 'home');
+		home.scale.setTo(0.2,0.2);
 		game.physics.arcade.enable(home);
 		home.body.velocity.x = -150;
 		home.body.onCollide = new Phaser.Signal();
@@ -82,7 +82,7 @@ window.onload = function() {
 	
     function createCar() {
 		car = game.add.sprite(800, 350*Math.random(), 'car');
-		car.scale.setTo(0.5,0.5);
+		car.scale.setTo(0.1,0.1);
 		game.physics.arcade.enable(car);
 		car.body.velocity.x = -150;
 		car.body.onCollide = new Phaser.Signal();
@@ -90,7 +90,7 @@ window.onload = function() {
 	}
     function createBus() {
 		bus = game.add.sprite(800, 100*Math.random()+300, 'bus');
-		bus.scale.setTo(0.5,0.5);
+		bus.scale.setTo(0.4,0.4);
 		game.physics.arcade.enable(bus);
 		bus.body.velocity.x = -150;
 		bus.body.onCollide = new Phaser.Signal();
@@ -98,7 +98,7 @@ window.onload = function() {
 	}
     function createFire() {
 		fire = game.add.sprite(800, 200*Math.random()+100, 'fire');
-		fire.scale.setTo(0.05,0.05);
+		fire.scale.setTo(0.005,0.005);
 		game.physics.arcade.enable(fire);
 		fire.body.velocity.x = -150;
 		fire.body.onCollide = new Phaser.Signal();
@@ -106,7 +106,7 @@ window.onload = function() {
 	}
     function createCan() {
 		can = game.add.sprite(800, 250*Math.random(), 'can');
-		can.scale.setTo(0.3,0.3);
+		can.scale.setTo(0.1,0.1);
 		game.physics.arcade.enable(can);
 		can.body.velocity.x = -150;
 		can.body.onCollide = new Phaser.Signal();
@@ -114,7 +114,7 @@ window.onload = function() {
 	}
     function createRock() {
 		rock = game.add.sprite(800, 150*Math.random()+400, 'rock');
-		rock.scale.setTo(0.3,0.3);
+		rock.scale.setTo(0.1,0.1);
 		game.physics.arcade.enable(rock);
 		rock.body.velocity.x = -150;
 		rock.body.onCollide = new Phaser.Signal();
@@ -135,6 +135,7 @@ window.onload = function() {
 	
 	function collide1(sprite1, sprite2){
       sprite1.destroy();
+	  sprite2.destroy();
 	  stateText.text = "You Won \n You Made it home " ;
 	  stateText.visible = true;
 	  if(car != null)
@@ -203,28 +204,28 @@ window.onload = function() {
 		{
 			createCar();
 		}
-		else if(Math.round(i/60) == 3 && bus == null)
+		else if(Math.round(i/60) == 5 && bus == null)
 		{
 			createBus();
 		}
-		else if(Math.round(i/60) == 4 && fire == null)
+		else if(Math.round(i/60) == 8 && fire == null)
 		{
 			createFire();
 		}
-		else if(Math.round(i/60) == 5 && can == null)
+		else if(Math.round(i/60) == 11 && can == null)
 		{
 			createCan();
 		}
-		else if(Math.round(i/60) == 6 && rock == null)
+		else if(Math.round(i/60) == 15 && rock == null)
 		{
 			createRock();
 		}
-		else if(Math.round(distance/60) == 20 && home == null)
+		else if(Math.round(distance/60) == 2 && home == null)
 		{
 			createHome();
 		}
 		
-		if((Math.round(i/60) == 8))
+		if((Math.round(i/60) == 22))
 		{
 			car = null;
 			bus = null;
@@ -245,7 +246,7 @@ window.onload = function() {
 		if(can != null)
 		game.physics.arcade.collide(sprite, can);
 		if(home != null)
-		game.physics.arcade.collide(sprite, home);
+		game.physics.arcade.collide(home, sprite);
 		
 	
 
